@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Insert title here</title>
+    <link href="bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bootstrap-3.3.7-dist/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+
+</head>
+<body>
+<br><br>
+<div th:text="${hintMessage}">信息提示!!!!</div>
+<br>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">查询条件</h3>
+        </div>
+        <div class="panel-body">
+            <form id="iform" th:action="@{/order/search.action}" th:method="post" th:object="${order}">
+
+            <div class="form-group">
+                <div class="rowGroup">
+                <label class="col-md-2 control-label">供应商编号：</label>
+                <div class="col-md-2">
+                    <input type="text" class="form-control" id="userId" name="userId"  value = "" >
+                </div>
+            </div>
+                <div class="rowGroup">
+                    <label class="col-md-2 control-label">供应商名称：</label>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control" id="orderCode" name="orderCode"  value="">
+                    </div>
+                </div>
+
+                <div class="rowGroup" >
+                    <label class="col-sm-1 control-label" >开始日期</label>
+                    <div class="col-sm-2 ">
+                        <div class="input-group"  >
+                            <input type="text" class="form-control form_datetime" id="hd_begdate" name="hd_begdate"/>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="rowGroup" >
+                    <label class="col-sm-1 control-label" >结束日期</label>
+                    <div class="col-sm-2 ">
+                        <div class="input-group"  >
+                            <input type="text" class="form-control form_datetime" id="hd_enddate" name="hd_enddate"/>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span></span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            </form>
+        </div>
+    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">查询结果</h3>
+        </div>
+        <div class="panel-body">
+            <ul class="list-group">
+                <li class="list-group-item" th:each="order : ${orderList}">
+                    <span th:text="${order.id}"></span>-
+                    <span th:text="${order.orderCode}"></span>-
+                    <span th:text="${order.userId}"></span>-
+                    <span th:text="${order.createTime}"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+<script>
+    $(document).ready(function() {
+
+        //设定日期选择格式
+        $('.form_datetime').datetimepicker({
+            minView: "month", //选择日期后，不会再跳转去选择时分秒
+            language: 'zh-CN',
+            format: 'yyyy-mm-dd',
+            todayBtn: 1,
+            autoclose: 1
+        }).on("click", function () {
+
+            //设定日期选择开始日期需要小于结束日期
+            $("#hd_begdate").datetimepicker("setEndDate", $("#hd_enddate").val());
+            $("#hd_enddate").datetimepicker("setStartDate", $("#hd_begdate").val());
+
+        });
+
+    });
+</script>
+
+
+</body>
+</html>
